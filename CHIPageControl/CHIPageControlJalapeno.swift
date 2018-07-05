@@ -27,6 +27,8 @@ import UIKit
 
 open class CHIPageControlJalapeno: CHIBasePageControl {
     
+    public var offsetPercentage: CGFloat = 1
+    
     internal var lastPage:Int = 0
     
     fileprivate var diameter: CGFloat {
@@ -106,7 +108,7 @@ open class CHIPageControlJalapeno: CHIBasePageControl {
             CGPoint(x:middleX+radius, y:radius*2 + top)
         ]
         
-        let offset: CGFloat = radius*0.55
+        let offset: CGFloat = radius * offsetPercentage
         
         let path = UIBezierPath()
         path.move(to: points[0])
