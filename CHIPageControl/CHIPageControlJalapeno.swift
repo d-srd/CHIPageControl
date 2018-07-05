@@ -137,7 +137,7 @@ open class CHIPageControlJalapeno: CHIBasePageControl {
                 layer.borderWidth = self.borderWidth
                 layer.borderColor = self.tintColor(position: index).cgColor
             }
-            layer.cornerRadius = self.radius
+            layer.cornerRadius = 0
             layer.frame = frame
             frame.origin.x += self.diameter + self.padding
         }
