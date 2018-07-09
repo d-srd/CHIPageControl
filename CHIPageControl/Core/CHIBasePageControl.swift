@@ -25,9 +25,9 @@
 
 import UIKit
 
-@IBDesignable open class CHIBasePageControl: UIControl, CHIPageControllable {
+open class CHIBasePageControl: UIControl, CHIPageControllable {
 
-    @IBInspectable open var numberOfPages: Int = 0 {
+    open var numberOfPages: Int = 0 {
         didSet {
             populateTintColors()
             updateNumberOfPages(numberOfPages)
@@ -35,7 +35,7 @@ import UIKit
         }
     }
     
-    @IBInspectable open var progress: Double = 0 {
+    open var progress: Double = 0 {
         didSet {
             update(for: progress)
         }
@@ -46,34 +46,34 @@ import UIKit
     }
     
     
-    @IBInspectable open var padding: CGFloat = 5 {
+     open var padding: CGFloat = 5 {
         didSet {
             setNeedsLayout()
             update(for: progress)
         }
     }
     
-    @IBInspectable open var radius: CGFloat = 10 {
+     open var radius: CGFloat = 10 {
         didSet {
             setNeedsLayout()
             update(for: progress)
         }
     }
     
-    @IBInspectable open var inactiveTransparency: CGFloat = 0.4 {
+     open var inactiveTransparency: CGFloat = 0.4 {
         didSet {
             setNeedsLayout()
             update(for: progress)
         }
     }
     
-    @IBInspectable open var hidesForSinglePage: Bool = true {
+     open var hidesForSinglePage: Bool = true {
         didSet {
             setNeedsLayout()
         }
     }
     
-    @IBInspectable open var borderWidth: CGFloat = 0 {
+     open var borderWidth: CGFloat = 0 {
         didSet {
             setNeedsLayout()
         }
@@ -94,7 +94,7 @@ import UIKit
         }
     }
 
-    @IBInspectable open var currentPageTintColor: UIColor? {
+     open var currentPageTintColor: UIColor? {
         didSet {
             setNeedsLayout()
         }
