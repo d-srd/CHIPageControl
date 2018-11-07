@@ -35,27 +35,27 @@ open class CHIPageControlJalapeno: CHIBasePageControl {
         return radius * 2
     }
     
-    fileprivate var inactive = [CHILayer]()
+    fileprivate var inactive = [CAShapeLayer]()
     
-    fileprivate var active: CHILayer = CHILayer()
-
+    fileprivate var active = CAShapeLayer()
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     override open func updateNumberOfPages(_ count: Int) {
         inactive.forEach { $0.removeFromSuperlayer() }
-        inactive = [CHILayer]()
+        inactive = [CAShapeLayer]()
         inactive = (0..<count).map {_ in
-            let layer = CHILayer()
+            let layer = CAShapeLayer()
             self.layer.addSublayer(layer)
             return layer
         }
-
+        
         self.layer.addSublayer(active)
         setNeedsLayout()
         self.invalidateIntrinsicContentSize()
@@ -101,22 +101,33 @@ open class CHIPageControlJalapeno: CHIBasePageControl {
         
         let top = (self.bounds.size.height - self.diameter)*0.5
         
+        let additionalWidth: CGFloat = 4
+        let additionalHeight: CGFloat = 2.5
         let points:[CGPoint] = [
-            CGPoint(x:leftX, y:radius + top),
-            CGPoint(x:middleX+radius, y:top),
-            CGPoint(x:rightX+radius*2, y:radius + top),
-            CGPoint(x:middleX+radius, y:radius*2 + top)
+            CGPoint(x:leftX - additionalHeight, y:radius + top),
+            CGPoint(x:middleX+radius, y:top - additionalWidth),
+            CGPoint(x:rightX+radius*2 + additionalHeight, y:radius + top),
+            CGPoint(x:middleX+radius, y:radius*2 + top + additionalWidth)
         ]
         
-        let offset: CGFloat = radius * offsetPercentage
+        let offset: CGFloat = radius * offsetPercentage + min(additionalWidth, additionalHeight)
         
         let path = UIBezierPath()
         path.move(to: points[0])
-        path.addCurve(to: points[1], controlPoint1: CGPoint(x:points[0].x, y: points[0].y-offset), controlPoint2: CGPoint(x:points[1].x-offset, y: points[1].y))
-        path.addCurve(to: points[2], controlPoint1: CGPoint(x:points[1].x+offset, y: points[1].y), controlPoint2: CGPoint(x:points[2].x, y: points[2].y-offset))
-        path.addCurve(to: points[3], controlPoint1: CGPoint(x:points[2].x, y: points[2].y+offset), controlPoint2: CGPoint(x:points[3].x+offset, y: points[3].y))
-        path.addCurve(to: points[0], controlPoint1: CGPoint(x:points[3].x-offset, y: points[3].y), controlPoint2: CGPoint(x:points[0].x, y: points[0].y+offset))
+        path.addCurve(to: points[1],
+                      controlPoint1: CGPoint(x:points[0].x, y: points[0].y-offset),
+                      controlPoint2: CGPoint(x:points[1].x-offset, y: points[1].y))
+        path.addCurve(to: points[2],
+                      controlPoint1: CGPoint(x:points[1].x+offset, y: points[1].y),
+                      controlPoint2: CGPoint(x:points[2].x, y: points[2].y-offset))
+        path.addCurve(to: points[3],
+                      controlPoint1: CGPoint(x:points[2].x, y: points[2].y+offset),
+                      controlPoint2: CGPoint(x:points[3].x+offset, y: points[3].y))
+        path.addCurve(to: points[0],
+                      controlPoint1: CGPoint(x:points[3].x-offset, y: points[3].y),
+                      controlPoint2: CGPoint(x:points[0].x, y: points[0].y+offset))
         self.active.path = path.cgPath
+        self.active.cornerRadius = 2
         
         if progress.truncatingRemainder(dividingBy: 1) == 0 {
             self.lastPage = Int(progress)
@@ -154,3 +165,4 @@ open class CHIPageControlJalapeno: CHIBasePageControl {
                       height: self.diameter)
     }
 }
+
